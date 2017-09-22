@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+tools:context="com.caruski.eatoutlog.ViewDishesActivity">
+
+<item
+    android:id="@+id/action_edit_dish"
+    android:orderInCategory="100"
+    android:title="Edit" />
+<item
+    android:id="@+id/action_share_dish"
+    android:orderInCategory="101"
+    android:title="Share" />
+<item
+    android:id="@+id/action_delete_dish"
+    android:orderInCategory="102"
+    android:title="Delete" />
+
+</menu>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Eat Out Log</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_new_rest">Add New Restaurant</string>
+    <string name="action_search">Search</string>
+    <string name="activity_new_rest">Add Restaurant</string>
+</resources>

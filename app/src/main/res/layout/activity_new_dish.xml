@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:padding="@dimen/activity_horizontal_margin"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true" >
+
+        <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/dishName"
+        android:hint="Dish Name" />
+
+    <TextView
+        android:text="Look"
+        android:layout_width="match_parent"
+        android:id="@+id/textView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="16sp"
+        android:textColor="@color/colorText"
+        android:layout_height="wrap_content" />
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ratingBarLook"
+        android:onClick="getRating"
+        style="@style/Widget.AppCompat.RatingBar" />
+
+    <TextView
+        android:text="Taste"
+        android:layout_width="match_parent"
+        android:id="@+id/textView2"
+        android:textSize="16dp"
+        android:textColor="@color/colorText"
+        android:layout_height="wrap_content" />
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="getRating"
+        android:id="@+id/ratingBarTaste" />
+
+    <TextView
+        android:text="Texture"
+        android:layout_width="match_parent"
+        android:id="@+id/textView3"
+        android:textColor="@color/colorText"
+        android:textSize="16sp"
+        android:layout_height="wrap_content" />
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="getRating"
+        android:id="@+id/ratingBarTexture" />
+
+    <TextView
+        android:text="Comments:"
+        android:layout_width="match_parent"
+        android:id="@+id/textView4"
+        android:textColor="@color/colorText"
+        android:textSize="16sp"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/dishComments" />
+
+
+    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/newDishSaveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@android:drawable/ic_menu_save"
+            app:backgroundTint="@android:color/holo_green_dark"
+            app:elevation="7dp"
+            android:layout_gravity="bottom|end" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_add_camera"
+        android:id="@+id/imageView" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/dishImageList" />
+
+</LinearLayout>
