@@ -6,14 +6,14 @@ tools:context="com.caruski.eatoutlog.ViewDishesActivity">
 <item
     android:id="@+id/action_edit_dish"
     android:orderInCategory="100"
-    android:title="Edit" />
+    android:title="@string/edit" />
 <item
     android:id="@+id/action_share_dish"
     android:orderInCategory="101"
-    android:title="Share" />
+    android:title="@string/share" />
 <item
     android:id="@+id/action_delete_dish"
     android:orderInCategory="102"
-    android:title="Delete" />
+    android:title="@string/delete" />
 
 </menu>

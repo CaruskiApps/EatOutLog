@@ -127,6 +127,8 @@ public class DBOpenHelper extends SQLiteOpenHelper{
         restaurant.setCity(c.getString(c.getColumnIndex(REST_CITY)));
         restaurant.setLastVisit(c.getString(c.getColumnIndex(REST_FIRST_VISIT)));
 
+        c.close();
+
         return restaurant;
     }
     //get all restaurants
@@ -150,6 +152,9 @@ public class DBOpenHelper extends SQLiteOpenHelper{
                 restaurants.add(restaurant);
             }while(c.moveToNext());
         }
+
+        c.close();
+
         return restaurants;
     }
     //delete restaurant
@@ -196,6 +201,8 @@ public class DBOpenHelper extends SQLiteOpenHelper{
         dish.setTexture(c.getFloat(c.getColumnIndex(TEXTURE)));
         dish.setComments((c.getString(c.getColumnIndex(COMMENTS))));
 
+        c.close();
+
         return dish;
     }
     //get all dishes that match a restId
@@ -222,6 +229,9 @@ public class DBOpenHelper extends SQLiteOpenHelper{
                 dishes.add(dish);
             }while(c.moveToNext());
         }
+
+        c.close();
+
         return dishes;
     }
     //update dish
@@ -291,6 +301,8 @@ public class DBOpenHelper extends SQLiteOpenHelper{
         image.setData(c.getBlob(c.getColumnIndex(IMAGE_DATA)));
         image.setFilename(c.getString(c.getColumnIndex(FILENAME)));
 
+        c.close();
+
         return image;
     }
     //get all images for given dishId
@@ -314,6 +326,9 @@ public class DBOpenHelper extends SQLiteOpenHelper{
                 images.add(image);
             }while(c.moveToNext());
         }
+
+        c.close();
+
         return images;
     }
 }

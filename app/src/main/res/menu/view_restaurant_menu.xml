@@ -4,11 +4,11 @@
     <item
         android:id="@+id/action_sort_rest_view"
         android:orderInCategory="100"
-        android:title="Sort.."
+        android:title="@string/sort"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_delete_all_dishes"
         android:orderInCategory="101"
-        android:title="Delete All Dishes" />
+        android:title="@string/delete_all_dishes" />
 
 </menu>

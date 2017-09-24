@@ -39,14 +39,14 @@
         app:backgroundTint="@android:color/holo_green_dark" />
 
     <TextView
-        android:text="Dish Name"
+        android:text="@string/dish_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView7"
         android:padding="10dp" />
 
     <TextView
-        android:text="Average Rating"
+        android:text="@string/average_rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView8"

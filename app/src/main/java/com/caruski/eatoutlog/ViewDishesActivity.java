@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.Locale;
 
 public class ViewDishesActivity extends AppCompatActivity {
 
@@ -35,7 +36,7 @@ public class ViewDishesActivity extends AppCompatActivity {
         //set activity title to restaurant name
         Restaurant restaurant = dbHelper.getRestaurant(restId);
         String title = restaurant.getName();
-        title = title.substring(0,1).toUpperCase() + title.substring(1);
+        title = title.substring(0,1).toUpperCase(Locale.getDefault()) + title.substring(1);
         setTitle(title);
 
         //populate listView with dishes
@@ -53,7 +54,7 @@ public class ViewDishesActivity extends AppCompatActivity {
         for (Dish d : dishes) {
             average = (double)Math.round(((d.getLook() + d.getTaste() + d.getTexture()) / 3) * 100d) / 100d;
             from[index] = d.getName() + "                " + average;
-            from[index] = from[index].substring(0,1).toUpperCase() + from[index].substring(1);
+            from[index] = from[index].substring(0,1).toUpperCase(Locale.getDefault()) + from[index].substring(1);
             index++;
         }
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(

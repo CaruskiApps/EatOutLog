@@ -190,4 +190,8 @@ public class NewDishActivity extends AppCompatActivity  implements View.OnClickL
 //        changeImage2.setOnClickListener(this);
 //        changeImage3.setOnClickListener(this);
     }
+
+    public void getRating(View v){
+        // TODO: Fixing Linting error, this method does nothing yet.
+    }
 }

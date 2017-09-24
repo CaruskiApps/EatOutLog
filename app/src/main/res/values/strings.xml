@@ -4,4 +4,24 @@
     <string name="action_new_rest">Add New Restaurant</string>
     <string name="action_search">Search</string>
     <string name="activity_new_rest">Add Restaurant</string>
+    <string name="delete">Delete</string>
+    <string name="share">Share</string>
+    <string name="edit">Edit</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="add_image">Add Image..</string>
+    <string name="sort">Sort..</string>
+    <string name="delete_all_dishes">Delete All Dishes</string>
+    <string name="restaurant">Restaurant</string>
+    <string name="num_dishes"># Dishes</string>
+    <string name="dish_name">Dish Name</string>
+    <string name="taste">Taste</string>
+    <string name="texture">Texture</string>
+    <string name="comments">Comments:</string>
+    <string name="restaurant_name">Restaurant Name</string>
+    <string name="city">City</string>
+    <string name="state">State</string>
+    <string name="average_rating">Average Rating</string>
+    <string name="look">Look</string>
+    <string name="refresh">Refresh</string>
 </resources>

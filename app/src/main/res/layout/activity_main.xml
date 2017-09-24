@@ -35,7 +35,7 @@
         app:backgroundTint="@android:color/holo_green_dark" />
 
     <TextView
-        android:text="Restaurant"
+        android:text="@string/restaurant"
         android:layout_width="138dp"
         android:layout_height="48dp"
         android:id="@+id/textView5"
@@ -43,7 +43,7 @@
         android:padding="10dp" />
 
     <TextView
-        android:text="# Dishes"
+        android:text="@string/num_dishes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView6"

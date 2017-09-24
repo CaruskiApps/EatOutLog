@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         final String[] from = new String[restaurants.size()];
         for(Restaurant r: restaurants){
             from[index] = r.getName();
-            from[index] = from[index].substring(0,1).toUpperCase() + from[index].substring(1);
+            from[index] = from[index].substring(0,1).toUpperCase(Locale.getDefault()) + from[index].substring(1);
             index++;
         }
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
