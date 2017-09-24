@@ -1,0 +1,13 @@
+language: android
+android:
+  components:
+    # Note that the tools section appears twice on purpose as it’s required to get the newest Android SDK tools.
+    - tools
+    - platform-tools
+    - tools
+
+    # The BuildTools version used by the project
+    - build-tools-26.0.1
+
+    # The SDK version used to compile the project
+    - android-25
