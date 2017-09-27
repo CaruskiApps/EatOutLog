@@ -1,5 +1,6 @@
 package com.caruski.eatoutlog.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,14 +17,19 @@ import android.widget.Toast;
 import com.caruski.eatoutlog.R;
 import com.caruski.eatoutlog.domain.Dish;
 import com.caruski.eatoutlog.domain.Restaurant;
-import com.caruski.eatoutlog.repository.DBOpenHelper;
+import com.caruski.eatoutlog.repository.DishRepository;
+import com.caruski.eatoutlog.repository.DishRepositoryImpl;
+import com.caruski.eatoutlog.repository.RestaurantRepository;
+import com.caruski.eatoutlog.repository.RestaurantRepositoryImpl;
 
 import java.util.List;
 import java.util.Locale;
 
 public class ViewDishesActivity extends AppCompatActivity {
 
-    DBOpenHelper dbHelper;
+    // TODO: Inject these.
+    private RestaurantRepository restaurantRepository;
+    private DishRepository dishRepository;
     private long restId;
     private ListView lv;
     List<Dish> dishes = null;
@@ -32,21 +38,24 @@ public class ViewDishesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_dishes);
 
-        dbHelper = new DBOpenHelper(getApplicationContext());
+        final Context context = getApplicationContext();
+        restaurantRepository = new RestaurantRepositoryImpl(context);
+        dishRepository = new DishRepositoryImpl(context);
+
         //get restId from MainActivity
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             restId = extras.getLong("rest_id");
         }
         //set activity title to restaurant name
-        Restaurant restaurant = dbHelper.getRestaurant(restId);
+        Restaurant restaurant = restaurantRepository.getRestaurant(restId);
         String title = restaurant.getName();
         title = title.substring(0,1).toUpperCase(Locale.getDefault()) + title.substring(1);
         setTitle(title);
 
         //populate listView with dishes
         int index = 0;
-        dishes = dbHelper.getAllDishes(restId);
+        dishes = dishRepository.getAllDishes(restId);
         lv = (ListView) findViewById(R.id.dishList);
         registerForContextMenu(lv);
 //        if (dishes.size() == 0) {
@@ -84,14 +93,14 @@ public class ViewDishesActivity extends AppCompatActivity {
         }
 
     public void deleteDish(long dishId){
-        dbHelper.deleteDish(dishId);
+        dishRepository.deleteDish(dishId);
         Toast.makeText(getApplicationContext(), "Dish deleted.", Toast.LENGTH_SHORT).show();
         startActivity(this.getIntent());
     }
     public void deleteAllDishes(){
         int count = 0;
         for(Dish d : dishes){
-            dbHelper.deleteDish(d.getId());
+            dishRepository.deleteDish(d.getId());
             count++;
         }
         Toast.makeText(getApplicationContext(), count + " dishes deleted.", Toast.LENGTH_SHORT).show();

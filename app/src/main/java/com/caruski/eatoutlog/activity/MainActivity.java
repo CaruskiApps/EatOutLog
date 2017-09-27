@@ -1,5 +1,6 @@
 package com.caruski.eatoutlog.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,14 +18,19 @@ import android.widget.Toast;
 
 import com.caruski.eatoutlog.R;
 import com.caruski.eatoutlog.domain.Restaurant;
-import com.caruski.eatoutlog.repository.DBOpenHelper;
+import com.caruski.eatoutlog.repository.DishRepository;
+import com.caruski.eatoutlog.repository.DishRepositoryImpl;
+import com.caruski.eatoutlog.repository.RestaurantRepository;
+import com.caruski.eatoutlog.repository.RestaurantRepositoryImpl;
 
 import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    DBOpenHelper dbHelper;
+    // TODO: Inject these.
+    private RestaurantRepository restaurantRepository;
+    private DishRepository dishRepository;
     private ListView lv;
     SwipeRefreshLayout swipeRefreshLayout;
     List<Restaurant> restaurants = null;
@@ -36,10 +42,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        dbHelper = new DBOpenHelper(getApplicationContext());
+        final Context context = getApplicationContext();
+        restaurantRepository = new RestaurantRepositoryImpl(context);
+        dishRepository = new DishRepositoryImpl(context);
         int index = 0;
-        restaurants = dbHelper.getAllRestaurants();
+        restaurants = restaurantRepository.getAllRestaurants();
 
         lv = (ListView) findViewById(R.id.restList);
         registerForContextMenu(lv);
@@ -80,12 +87,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void deleteRestaurant(long restId){
-        int count = dbHelper.getDishCount(restId);
+        int count = dishRepository.getDishCount(restId);
         if(count > 0){
             Toast.makeText(getApplicationContext(), "Restaurant has " + count + " dishes still", Toast.LENGTH_SHORT).show();
         }
         else {
-            dbHelper.deleteRestaurant(restId);
+            restaurantRepository.deleteRestaurant(restId);
             Toast.makeText(getApplicationContext(), "Restaurant deleted.", Toast.LENGTH_SHORT).show();
             startActivity(this.getIntent());
         }

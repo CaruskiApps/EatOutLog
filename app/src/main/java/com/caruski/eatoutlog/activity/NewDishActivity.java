@@ -1,5 +1,6 @@
 package com.caruski.eatoutlog.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,7 +23,8 @@ import android.widget.Toast;
 
 import com.caruski.eatoutlog.R;
 import com.caruski.eatoutlog.domain.Dish;
-import com.caruski.eatoutlog.repository.DBOpenHelper;
+import com.caruski.eatoutlog.repository.DishRepository;
+import com.caruski.eatoutlog.repository.DishRepositoryImpl;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -30,7 +32,8 @@ import java.io.InputStream;
 public class NewDishActivity extends AppCompatActivity  implements View.OnClickListener{
 
     long restId, dishId;
-    DBOpenHelper dbHelper;
+    // TODO: inject this.
+    private DishRepository dishRepository;
     private final int CAMERA_REQUEST_1 = 1200;
     private final int CAMERA_REQUEST_2 = 1201;
     private final int CAMERA_REQUEST_3 = 1202;
@@ -43,7 +46,9 @@ public class NewDishActivity extends AppCompatActivity  implements View.OnClickL
         setContentView(R.layout.activity_new_dish);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        dbHelper = new DBOpenHelper(getApplicationContext());
+        final Context context = getApplicationContext();
+        dishRepository = new DishRepositoryImpl(context);
+
         final EditText dishNameBox = (EditText) findViewById(R.id.dishName);
         final RatingBar rateBarLook = (RatingBar) findViewById(R.id.ratingBarLook);
         final RatingBar rateBarTaste = (RatingBar) findViewById(R.id.ratingBarTaste);
@@ -56,7 +61,7 @@ public class NewDishActivity extends AppCompatActivity  implements View.OnClickL
                 restId = extras.getLong("rest_id");
             } else if (extras.containsKey("dish_id")) {
                 dishId = extras.getLong("dish_id");
-                Dish dish = dbHelper.getDish(dishId);
+                Dish dish = dishRepository.getDish(dishId);
                 setTitle(dish.getName());
                 dishNameBox.setText(dish.getName());
                 rateBarLook.setRating(dish.getLook());
@@ -87,18 +92,18 @@ public class NewDishActivity extends AppCompatActivity  implements View.OnClickL
                             Toast.LENGTH_SHORT).show();
                     setResult(RESULT_CANCELED);
                 } else if (dishId > 0) {
-                    Dish dish = dbHelper.getDish(dishId);
+                    Dish dish = dishRepository.getDish(dishId);
                     dish.setName(dishName);
                     dish.setLook(lookRating);
                     dish.setTaste(tasteRating);
                     dish.setTexture(textureRating);
                     dish.setComments(comments);
-                    dbHelper.updateDish(dish);
+                    dishRepository.updateDish(dish);
                     startActivity(new Intent(NewDishActivity.this, MainActivity.class));
                     Toast.makeText(getApplicationContext(), "Dish updated.", Toast.LENGTH_SHORT).show();
                 } else {
                     Dish dish = new Dish(restId, dishName, lookRating, tasteRating, textureRating, comments);
-                    dbHelper.createDish(dish);
+                    dishRepository.createDish(dish);
                     Intent intent = new Intent(NewDishActivity.this, ViewDishesActivity.class);
                     intent.putExtra("rest_id", dish.getRestId());
                     finish();

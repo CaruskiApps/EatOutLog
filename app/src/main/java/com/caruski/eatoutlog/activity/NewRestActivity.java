@@ -1,5 +1,6 @@
 package com.caruski.eatoutlog.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,18 +13,22 @@ import android.widget.Toast;
 
 import com.caruski.eatoutlog.R;
 import com.caruski.eatoutlog.domain.Restaurant;
-import com.caruski.eatoutlog.repository.DBOpenHelper;
+import com.caruski.eatoutlog.repository.RestaurantRepository;
+import com.caruski.eatoutlog.repository.RestaurantRepositoryImpl;
 
-public class NewRestActivity extends AppCompatActivity{
+public class NewRestActivity extends AppCompatActivity {
 
-    DBOpenHelper dbHelper;
+    // TODO: inject this.
+    private RestaurantRepository restaurantRepository;
     long restId;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_rest);
 
-        dbHelper = new DBOpenHelper(getApplicationContext());
+        final Context context = getApplicationContext();
+        restaurantRepository = new RestaurantRepositoryImpl(context);
+
         final EditText restNameBox = (EditText) findViewById(R.id.editRestName);
         final EditText restCityBox = (EditText) findViewById(R.id.editRestCity);
         final EditText restStateBox = (EditText) findViewById(R.id.editRestState);
@@ -32,7 +37,7 @@ public class NewRestActivity extends AppCompatActivity{
         if (extras != null) {
             if (extras.containsKey("rest_id")) {
                 restId = extras.getLong("rest_id");
-                Restaurant rest = dbHelper.getRestaurant(restId);
+                Restaurant rest = restaurantRepository.getRestaurant(restId);
                 setTitle(rest.getName());
                 restNameBox.setText(rest.getName());
                 restCityBox.setText(rest.getCity());
@@ -40,26 +45,25 @@ public class NewRestActivity extends AppCompatActivity{
             }
         }
 
-        FloatingActionButton saveRestButton = (FloatingActionButton)findViewById(R.id.newRestSaveButton);
+        FloatingActionButton saveRestButton = (FloatingActionButton) findViewById(R.id.newRestSaveButton);
         saveRestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                EditText name = (EditText)findViewById(R.id.editRestName);
+                EditText name = (EditText) findViewById(R.id.editRestName);
                 String rName = name.getText().toString();
-                EditText state = (EditText)findViewById(R.id.editRestState);
+                EditText state = (EditText) findViewById(R.id.editRestState);
                 String rState = state.getText().toString();
-                EditText city = (EditText)findViewById(R.id.editRestCity);
+                EditText city = (EditText) findViewById(R.id.editRestCity);
                 String rCity = city.getText().toString();
 
-                if(rName.length() == 0){
+                if (rName.length() == 0) {
                     Toast.makeText(getApplicationContext(), "Please enter a name for restaurant.",
                             Toast.LENGTH_SHORT).show();
                     setResult(RESULT_CANCELED);
-                }
-                else{
+                } else {
                     Restaurant restaurant = new Restaurant(rName, rState, rCity);
-                    long restId = dbHelper.createRestaurant(restaurant);
+                    long restId = restaurantRepository.createRestaurant(restaurant);
                     Toast.makeText(getApplicationContext(), "Restaurant Saved\nID: " + restId,
                             Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(NewRestActivity.this, NewDishActivity.class);
