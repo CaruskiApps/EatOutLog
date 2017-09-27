@@ -7,58 +7,66 @@ import java.io.ByteArrayOutputStream;
 
 public class Image {
 
-    long _id;
-    long dishId;
-    byte[] data;
-    String filename;
+    private long _id;
+    private long dishId;
+    private byte[] data;
+    private String filename;
 
-    public Image(){
+    public Image() {
     }
-    public Image(long dishId, byte[] data, String filename){
+
+    public Image(long dishId, byte[] data, String filename) {
         this.dishId = dishId;
         this.data = data;
         this.filename = filename;
     }
 
     //setters
-    public void setId(long _id){
+    public void setId(long _id) {
         this._id = _id;
     }
-    public void setDishId(long dishId){
+
+    public void setDishId(long dishId) {
         this.dishId = dishId;
     }
-    public void setData(byte[] data){
+
+    public void setData(byte[] data) {
         this.data = data;
     }
-    public void setFilename(String filename){
+
+    public void setFilename(String filename) {
         this.filename = filename;
     }
 
     //getters
-    public long getId(){
+    public long getId() {
         return this._id;
     }
-    public long getDishId(){
+
+    public long getDishId() {
         return this.dishId;
     }
-    public byte[] getData(){
+
+    public byte[] getData() {
         return this.data;
     }
-    public String getFilename(){
+
+    public String getFilename() {
         return this.filename;
     }
+
     //convert Bitmap to byte[]
-    public byte[] getBitmapAsByteArray(Bitmap bitmap){
+    public byte[] getBitmapAsByteArray(Bitmap bitmap) {
         ByteArrayOutputStream byteData = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, byteData);
         return byteData.toByteArray();
     }
+
     //convert from byte[] to Bitmap
-    public Bitmap getImage(byte[] image){
+    public Bitmap getImage(byte[] image) {
         return BitmapFactory.decodeByteArray(image, 0, image.length);
     }
 }
-
 
 
 //    String fnm = "cat"; //  this is image file name
