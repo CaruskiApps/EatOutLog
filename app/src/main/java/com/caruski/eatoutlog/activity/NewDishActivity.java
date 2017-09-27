@@ -1,7 +1,5 @@
-package com.caruski.eatoutlog;
+package com.caruski.eatoutlog.activity;
 
-import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -18,11 +15,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Toast;
+
+import com.caruski.eatoutlog.R;
+import com.caruski.eatoutlog.domain.Dish;
+import com.caruski.eatoutlog.repository.DBOpenHelper;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;

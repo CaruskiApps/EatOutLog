@@ -1,4 +1,4 @@
-package com.caruski.eatoutlog;
+package com.caruski.eatoutlog.domain;
 
 public class Dish {
 

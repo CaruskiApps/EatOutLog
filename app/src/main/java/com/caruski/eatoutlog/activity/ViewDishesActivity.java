@@ -1,4 +1,4 @@
-package com.caruski.eatoutlog;
+package com.caruski.eatoutlog.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.caruski.eatoutlog.R;
+import com.caruski.eatoutlog.domain.Dish;
+import com.caruski.eatoutlog.domain.Restaurant;
+import com.caruski.eatoutlog.repository.DBOpenHelper;
 
 import java.util.List;
 import java.util.Locale;

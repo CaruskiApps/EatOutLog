@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -18,19 +18,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NewRestActivity"
+            android:name=".activity.NewRestActivity"
             android:label="@string/activity_new_rest"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".activity.MainActivity"/>
         <activity
-            android:name=".NewDishActivity"
+            android:name=".activity.NewDishActivity"
             android:label="Add New Dish"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".activity.MainActivity"
             android:windowSoftInputMode="stateHidden|adjustResize"
             />
         <activity
-            android:name=".ViewDishesActivity"
+            android:name=".activity.ViewDishesActivity"
             android:label="View Dishes"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".activity.MainActivity"
             />
     </application>
 </manifest>

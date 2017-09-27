@@ -1,14 +1,14 @@
-package com.caruski.eatoutlog;
+package com.caruski.eatoutlog.repository;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+
+import com.caruski.eatoutlog.domain.Restaurant;
+import com.caruski.eatoutlog.domain.Dish;
+import com.caruski.eatoutlog.domain.Image;
 
 import java.util.ArrayList;
 import java.util.List;

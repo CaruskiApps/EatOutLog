@@ -1,4 +1,4 @@
-package com.caruski.eatoutlog;
+package com.caruski.eatoutlog.domain;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

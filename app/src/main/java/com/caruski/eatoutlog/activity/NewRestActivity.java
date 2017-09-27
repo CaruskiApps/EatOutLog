@@ -1,4 +1,4 @@
-package com.caruski.eatoutlog;
+package com.caruski.eatoutlog.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.caruski.eatoutlog.R;
+import com.caruski.eatoutlog.domain.Restaurant;
+import com.caruski.eatoutlog.repository.DBOpenHelper;
 
 public class NewRestActivity extends AppCompatActivity{
 
