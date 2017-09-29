@@ -1,6 +1,5 @@
 package com.caruski.eatoutlog.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,19 +20,21 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import com.caruski.eatoutlog.EatOutLogApplication;
 import com.caruski.eatoutlog.R;
 import com.caruski.eatoutlog.domain.Dish;
 import com.caruski.eatoutlog.repository.DishRepository;
-import com.caruski.eatoutlog.repository.DishRepositoryImpl;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import javax.inject.Inject;
+
 public class NewDishActivity extends AppCompatActivity  implements View.OnClickListener{
 
+    @Inject
+    DishRepository dishRepository;
     long restId, dishId;
-    // TODO: inject this.
-    private DishRepository dishRepository;
     private final int CAMERA_REQUEST_1 = 1200;
     private final int CAMERA_REQUEST_2 = 1201;
     private final int CAMERA_REQUEST_3 = 1202;
@@ -42,12 +43,10 @@ public class NewDishActivity extends AppCompatActivity  implements View.OnClickL
     private ImageView imageView;
 
     protected void onCreate(Bundle savedInstanceState) {
+        EatOutLogApplication.app().basicComponent().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_dish);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-
-        final Context context = getApplicationContext();
-        dishRepository = new DishRepositoryImpl(context);
 
         final EditText dishNameBox = (EditText) findViewById(R.id.dishName);
         final RatingBar rateBarLook = (RatingBar) findViewById(R.id.ratingBarLook);

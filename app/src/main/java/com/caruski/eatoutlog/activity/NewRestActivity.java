@@ -1,6 +1,5 @@
 package com.caruski.eatoutlog.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -11,23 +10,23 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.caruski.eatoutlog.EatOutLogApplication;
 import com.caruski.eatoutlog.R;
 import com.caruski.eatoutlog.domain.Restaurant;
 import com.caruski.eatoutlog.repository.RestaurantRepository;
-import com.caruski.eatoutlog.repository.RestaurantRepositoryImpl;
+
+import javax.inject.Inject;
 
 public class NewRestActivity extends AppCompatActivity {
 
-    // TODO: inject this.
-    private RestaurantRepository restaurantRepository;
+    @Inject
+    RestaurantRepository restaurantRepository;
     long restId;
 
     protected void onCreate(Bundle savedInstanceState) {
+        EatOutLogApplication.app().basicComponent().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_rest);
-
-        final Context context = getApplicationContext();
-        restaurantRepository = new RestaurantRepositoryImpl(context);
 
         final EditText restNameBox = (EditText) findViewById(R.id.editRestName);
         final EditText restCityBox = (EditText) findViewById(R.id.editRestCity);

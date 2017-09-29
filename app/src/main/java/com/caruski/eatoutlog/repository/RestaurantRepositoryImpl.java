@@ -10,6 +10,7 @@ import com.caruski.eatoutlog.domain.Restaurant;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * TODO: Make this package private with Dagger
  */

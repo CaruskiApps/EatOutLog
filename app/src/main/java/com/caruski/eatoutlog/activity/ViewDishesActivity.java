@@ -1,6 +1,5 @@
 package com.caruski.eatoutlog.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,33 +13,32 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.caruski.eatoutlog.EatOutLogApplication;
 import com.caruski.eatoutlog.R;
 import com.caruski.eatoutlog.domain.Dish;
 import com.caruski.eatoutlog.domain.Restaurant;
 import com.caruski.eatoutlog.repository.DishRepository;
-import com.caruski.eatoutlog.repository.DishRepositoryImpl;
 import com.caruski.eatoutlog.repository.RestaurantRepository;
-import com.caruski.eatoutlog.repository.RestaurantRepositoryImpl;
 
 import java.util.List;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 public class ViewDishesActivity extends AppCompatActivity {
 
-    // TODO: Inject these.
-    private RestaurantRepository restaurantRepository;
-    private DishRepository dishRepository;
+    @Inject
+    RestaurantRepository restaurantRepository;
+    @Inject
+    DishRepository dishRepository;
     private long restId;
     private ListView lv;
     List<Dish> dishes = null;
 
     protected void onCreate(Bundle savedInstanceState) {
+        EatOutLogApplication.app().basicComponent().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_dishes);
-
-        final Context context = getApplicationContext();
-        restaurantRepository = new RestaurantRepositoryImpl(context);
-        dishRepository = new DishRepositoryImpl(context);
 
         //get restId from MainActivity
         Bundle extras = getIntent().getExtras();
@@ -50,7 +48,7 @@ public class ViewDishesActivity extends AppCompatActivity {
         //set activity title to restaurant name
         Restaurant restaurant = restaurantRepository.getRestaurant(restId);
         String title = restaurant.getName();
-        title = title.substring(0,1).toUpperCase(Locale.getDefault()) + title.substring(1);
+        title = title.substring(0, 1).toUpperCase(Locale.getDefault()) + title.substring(1);
         setTitle(title);
 
         //populate listView with dishes
@@ -66,9 +64,9 @@ public class ViewDishesActivity extends AppCompatActivity {
         double average;
         //iterate and store dish names and ratings
         for (Dish d : dishes) {
-            average = (double)Math.round(((d.getLook() + d.getTaste() + d.getTexture()) / 3) * 100d) / 100d;
+            average = (double) Math.round(((d.getLook() + d.getTaste() + d.getTexture()) / 3) * 100d) / 100d;
             from[index] = d.getName() + "                " + average;
-            from[index] = from[index].substring(0,1).toUpperCase(Locale.getDefault()) + from[index].substring(1);
+            from[index] = from[index].substring(0, 1).toUpperCase(Locale.getDefault()) + from[index].substring(1);
             index++;
         }
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
@@ -86,20 +84,21 @@ public class ViewDishesActivity extends AppCompatActivity {
         });
     }
 
-    public void newDish(View view){
-            Intent intent = new Intent(this, NewDishActivity.class);
-            intent.putExtra("rest_id", restId);
-            startActivity(intent);
-        }
+    public void newDish(View view) {
+        Intent intent = new Intent(this, NewDishActivity.class);
+        intent.putExtra("rest_id", restId);
+        startActivity(intent);
+    }
 
-    public void deleteDish(long dishId){
+    public void deleteDish(long dishId) {
         dishRepository.deleteDish(dishId);
         Toast.makeText(getApplicationContext(), "Dish deleted.", Toast.LENGTH_SHORT).show();
         startActivity(this.getIntent());
     }
-    public void deleteAllDishes(){
+
+    public void deleteAllDishes() {
         int count = 0;
-        for(Dish d : dishes){
+        for (Dish d : dishes) {
             dishRepository.deleteDish(d.getId());
             count++;
         }
@@ -121,11 +120,11 @@ public class ViewDishesActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_edit_dish:
                 Intent intent = new Intent(getBaseContext(), NewDishActivity.class);
-                intent.putExtra("dish_id", dishes.get((int)info.id).getId());
+                intent.putExtra("dish_id", dishes.get((int) info.id).getId());
                 startActivity(intent);
                 return true;
             case R.id.action_delete_dish:
-                int dishId = (int)info.id;
+                int dishId = (int) info.id;
                 deleteDish(dishes.get(dishId).getId());
                 return true;
             case R.id.action_share_dish:
@@ -141,6 +140,7 @@ public class ViewDishesActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.view_restaurant_menu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -158,4 +158,4 @@ public class ViewDishesActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    }
+}

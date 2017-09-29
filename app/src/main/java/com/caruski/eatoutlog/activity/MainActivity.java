@@ -1,36 +1,37 @@
 package com.caruski.eatoutlog.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
-import android.view.MenuInflater;
-import android.view.View;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.caruski.eatoutlog.EatOutLogApplication;
 import com.caruski.eatoutlog.R;
 import com.caruski.eatoutlog.domain.Restaurant;
 import com.caruski.eatoutlog.repository.DishRepository;
-import com.caruski.eatoutlog.repository.DishRepositoryImpl;
 import com.caruski.eatoutlog.repository.RestaurantRepository;
-import com.caruski.eatoutlog.repository.RestaurantRepositoryImpl;
 
 import java.util.List;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 public class MainActivity extends AppCompatActivity {
 
-    // TODO: Inject these.
-    private RestaurantRepository restaurantRepository;
-    private DishRepository dishRepository;
+    @Inject
+    RestaurantRepository restaurantRepository;
+    @Inject
+    DishRepository dishRepository;
     private ListView lv;
     SwipeRefreshLayout swipeRefreshLayout;
     List<Restaurant> restaurants = null;
@@ -38,13 +39,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EatOutLogApplication.app().basicComponent().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        final Context context = getApplicationContext();
-        restaurantRepository = new RestaurantRepositoryImpl(context);
-        dishRepository = new DishRepositoryImpl(context);
         int index = 0;
         restaurants = restaurantRepository.getAllRestaurants();
 
