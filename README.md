@@ -20,16 +20,15 @@ Contributions are welcome! Whether it's documentation updates, opening issues, o
 
 ## Synopsis
 
-To Do: Update this more!
 This is an application to create personal reviews of restaurants / meals for future reference!
- Save your reviews between devices. Share your review on your favorite social media platform.
+Save your reviews between devices. Share your review on your favorite social media platform.
 
 ## Motivation
 
-To Do: A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists.
 Ever go to a restaurant and maybe enjoyed the food? Maybe not? Has it been 6 months or more since you
 last went to said restaurant and had no idea what you had the last time? We are here to help you
 remember.
+
 ## Installation
 
 This is an Android application.  The latest stable release can be found at: (link tbd).
