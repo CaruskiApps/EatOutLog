@@ -36,7 +36,8 @@ public class ViewDishesActivity extends AppCompatActivity {
     List<Dish> dishes = null;
 
     protected void onCreate(Bundle savedInstanceState) {
-        EatOutLogApplication.app().basicComponent().inject(this);
+        // Pass the view to Dagger for injection
+        EatOutLogApplication.app().applicationComponent().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_dishes);
 

@@ -10,11 +10,11 @@ import com.caruski.eatoutlog.domain.Dish;
 import java.util.ArrayList;
 import java.util.List;
 
+import dagger.Module;
 
-/**
- * TODO: Make this package private with Dagger
- */
-public class DishRepositoryImpl extends AbstractRepository implements DishRepository {
+
+@Module
+class DishRepositoryImpl extends AbstractRepository implements DishRepository {
 
     private static final String TABLE_DISHES = "dishes";
     private static final String REST_ID = "restID";
@@ -38,7 +38,7 @@ public class DishRepositoryImpl extends AbstractRepository implements DishReposi
                     DATE_ADDED + " TEXT default CURRENT_DATE" +
                     ")";
 
-    public DishRepositoryImpl(Context context) {
+    DishRepositoryImpl(Context context) {
         super(context);
     }
 

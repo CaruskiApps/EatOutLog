@@ -24,7 +24,8 @@ public class NewRestActivity extends AppCompatActivity {
     long restId;
 
     protected void onCreate(Bundle savedInstanceState) {
-        EatOutLogApplication.app().basicComponent().inject(this);
+        // Pass the view to Dagger for injection
+        EatOutLogApplication.app().applicationComponent().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_rest);
 

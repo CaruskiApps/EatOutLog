@@ -2,15 +2,17 @@ package com.caruski.eatoutlog;
 
 import android.app.Application;
 
-import com.caruski.eatoutlog.dagger.BasicComponent;
-import com.caruski.eatoutlog.dagger.DaggerBasicComponent;
-import com.caruski.eatoutlog.dagger.EatOutLogModule;
+import com.caruski.eatoutlog.dagger.ApplicationComponent;
+import com.caruski.eatoutlog.dagger.ApplicationModule;
+import com.caruski.eatoutlog.dagger.DaggerApplicationComponent;
 
-
+/**
+ * This is our application class, that allows Dagger dependency injection to get started.
+ */
 public class EatOutLogApplication extends Application {
 
     private static EatOutLogApplication eatOutLogApplication;
-    private BasicComponent basicComponent;
+    private ApplicationComponent applicationComponent;
 
     public static EatOutLogApplication app() {
         return eatOutLogApplication;
@@ -20,15 +22,16 @@ public class EatOutLogApplication extends Application {
     public void onCreate() {
         super.onCreate();
         eatOutLogApplication = this;
-        basicComponent = DaggerBasicComponent.
+        // Trigger the ApplicationComponent injection
+        applicationComponent = DaggerApplicationComponent.
                 builder()
-                .eatOutLogModule(new EatOutLogModule(getApplicationContext()))
+                // Pass it the applicationContext for the app.
+                .applicationModule(new ApplicationModule(getApplicationContext()))
                 .build();
-
     }
 
-    public BasicComponent basicComponent(){
-        return basicComponent;
+    public ApplicationComponent applicationComponent() {
+        return applicationComponent;
     }
 
 }

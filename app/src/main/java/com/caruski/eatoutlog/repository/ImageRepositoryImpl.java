@@ -10,11 +10,11 @@ import com.caruski.eatoutlog.domain.Image;
 import java.util.ArrayList;
 import java.util.List;
 
+import dagger.Module;
 
-/**
- * TODO: Make this package private with Dagger
- */
-public class ImageRepositoryImpl extends AbstractRepository implements ImageRepository {
+
+@Module
+class ImageRepositoryImpl extends AbstractRepository implements ImageRepository {
 
     private static final String TABLE_IMAGES = "images";
     private static final String DISH_ID = "dishID";
@@ -30,7 +30,7 @@ public class ImageRepositoryImpl extends AbstractRepository implements ImageRepo
                     IMAGE_DATA + " BLOB" +
                     ")";
 
-    public ImageRepositoryImpl(Context context) {
+    ImageRepositoryImpl(Context context) {
         super(context);
     }
 

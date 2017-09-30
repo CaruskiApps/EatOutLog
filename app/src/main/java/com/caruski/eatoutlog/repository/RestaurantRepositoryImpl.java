@@ -10,11 +10,10 @@ import com.caruski.eatoutlog.domain.Restaurant;
 import java.util.ArrayList;
 import java.util.List;
 
+import dagger.Module;
 
-/**
- * TODO: Make this package private with Dagger
- */
-public class RestaurantRepositoryImpl extends AbstractRepository implements RestaurantRepository {
+@Module
+class RestaurantRepositoryImpl extends AbstractRepository implements RestaurantRepository {
 
     //Constants for identifying table and columns
     private static final String TABLE_RESTAURANTS = "restaurants";
@@ -33,8 +32,9 @@ public class RestaurantRepositoryImpl extends AbstractRepository implements Rest
                     REST_FIRST_VISIT + " TEXT default CURRENT_DATE" +
                     ")";
 
-    public RestaurantRepositoryImpl(Context context) {
-        super(context);}
+    RestaurantRepositoryImpl(Context context) {
+        super(context);
+    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -51,7 +51,7 @@ public class RestaurantRepositoryImpl extends AbstractRepository implements Rest
     }
 
     @Override
-    public long createRestaurant(Restaurant restaurant){
+    public long createRestaurant(Restaurant restaurant) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -65,14 +65,14 @@ public class RestaurantRepositoryImpl extends AbstractRepository implements Rest
     }
 
     @Override
-    public Restaurant getRestaurant(long rest_id){
+    public Restaurant getRestaurant(long rest_id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String selectQuery = "SELECT * FROM " + TABLE_RESTAURANTS + " WHERE " + KEY_ID +
                 " = " + rest_id;
 
         Cursor c = db.rawQuery(selectQuery, null);
-        if(c != null){
+        if (c != null) {
             c.moveToFirst();
         }
 
@@ -89,7 +89,7 @@ public class RestaurantRepositoryImpl extends AbstractRepository implements Rest
     }
 
     @Override
-    public List<Restaurant> getAllRestaurants(){
+    public List<Restaurant> getAllRestaurants() {
         List<Restaurant> restaurants = new ArrayList<Restaurant>();
         String selectQuery = "SELECT * FROM " + TABLE_RESTAURANTS + " order by restName";
 
@@ -97,8 +97,8 @@ public class RestaurantRepositoryImpl extends AbstractRepository implements Rest
         Cursor c = db.rawQuery(selectQuery, null);
 
         //loop through all rows and add to List
-        if(c.moveToFirst()){
-            do{
+        if (c.moveToFirst()) {
+            do {
                 Restaurant restaurant = new Restaurant();
                 restaurant.setId(c.getLong(c.getColumnIndex(KEY_ID)));
                 restaurant.setName(c.getString(c.getColumnIndex(REST_NAME)));
@@ -107,17 +107,18 @@ public class RestaurantRepositoryImpl extends AbstractRepository implements Rest
                 restaurant.setLastVisit(c.getString(c.getColumnIndex(REST_FIRST_VISIT)));
                 //add to list
                 restaurants.add(restaurant);
-            }while(c.moveToNext());
+            } while (c.moveToNext());
         }
 
         c.close();
 
         return restaurants;
     }
+
     @Override
-    public void deleteRestaurant(long rest_id){
+    public void deleteRestaurant(long rest_id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_RESTAURANTS, KEY_ID + " = ?",
-                new String[] {String.valueOf(rest_id)});
+                new String[]{String.valueOf(rest_id)});
     }
 }

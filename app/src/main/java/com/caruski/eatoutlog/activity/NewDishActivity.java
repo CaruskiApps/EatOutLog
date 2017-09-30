@@ -30,7 +30,7 @@ import java.io.InputStream;
 
 import javax.inject.Inject;
 
-public class NewDishActivity extends AppCompatActivity  implements View.OnClickListener{
+public class NewDishActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Inject
     DishRepository dishRepository;
@@ -43,7 +43,8 @@ public class NewDishActivity extends AppCompatActivity  implements View.OnClickL
     private ImageView imageView;
 
     protected void onCreate(Bundle savedInstanceState) {
-        EatOutLogApplication.app().basicComponent().inject(this);
+        // Pass the view to Dagger for injection
+        EatOutLogApplication.app().applicationComponent().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_dish);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -114,7 +115,7 @@ public class NewDishActivity extends AppCompatActivity  implements View.OnClickL
     }
 
     @Override
-    public void onClick(View v){
+    public void onClick(View v) {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 //        switch(v.getId()){
 //            case R.id.changeImage1:
@@ -137,8 +138,8 @@ public class NewDishActivity extends AppCompatActivity  implements View.OnClickL
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.action_add_image: {
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
@@ -171,19 +172,19 @@ public class NewDishActivity extends AppCompatActivity  implements View.OnClickL
 //            Bitmap photo = (Bitmap)data.getExtras().get("data");
 //            image3.setImageBitmap(photo);
 //        }
-        if(requestCode == SELECT_PHOTO && resultCode == RESULT_OK){
+        if (requestCode == SELECT_PHOTO && resultCode == RESULT_OK) {
             try {
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                 imageView.setImageBitmap(selectedImage);
-            } catch (FileNotFoundException e){
+            } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         }
     }
-    
-    public void setListeners(){
+
+    public void setListeners() {
 //        changeImage1 = (ImageButton)findViewById(R.id.changeImage1);
 //        changeImage2 = (ImageButton)findViewById(R.id.changeImage2);
 //        changeImage3 = (ImageButton)findViewById(R.id.changeImage3);
@@ -195,7 +196,7 @@ public class NewDishActivity extends AppCompatActivity  implements View.OnClickL
 //        changeImage3.setOnClickListener(this);
     }
 
-    public void getRating(View v){
+    public void getRating(View v) {
         // TODO: Fixing Linting error, this method does nothing yet.
     }
 }

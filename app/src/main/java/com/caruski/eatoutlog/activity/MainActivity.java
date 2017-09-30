@@ -27,7 +27,7 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity {
-
+    
     @Inject
     RestaurantRepository restaurantRepository;
     @Inject
@@ -39,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        EatOutLogApplication.app().basicComponent().inject(this);
+        // Pass the view to Dagger for injection
+        EatOutLogApplication.app().applicationComponent().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -50,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
         lv = (ListView) findViewById(R.id.restList);
         registerForContextMenu(lv);
         final String[] from = new String[restaurants.size()];
-        for(Restaurant r: restaurants){
+        for (Restaurant r : restaurants) {
             from[index] = r.getName();
-            from[index] = from[index].substring(0,1).toUpperCase(Locale.getDefault()) + from[index].substring(1);
+            from[index] = from[index].substring(0, 1).toUpperCase(Locale.getDefault()) + from[index].substring(1);
             index++;
         }
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swiperefresh);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -80,24 +81,23 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void newRestaurant(View view){
+    public void newRestaurant(View view) {
         Intent intent = new Intent(this, NewRestActivity.class);
         startActivity(intent);
     }
 
-    public void deleteRestaurant(long restId){
+    public void deleteRestaurant(long restId) {
         int count = dishRepository.getDishCount(restId);
-        if(count > 0){
+        if (count > 0) {
             Toast.makeText(getApplicationContext(), "Restaurant has " + count + " dishes still", Toast.LENGTH_SHORT).show();
-        }
-        else {
+        } else {
             restaurantRepository.deleteRestaurant(restId);
             Toast.makeText(getApplicationContext(), "Restaurant deleted.", Toast.LENGTH_SHORT).show();
             startActivity(this.getIntent());
         }
     }
 
-    public void editRestaurant(long restId){
+    public void editRestaurant(long restId) {
         Intent intent = new Intent(this, NewRestActivity.class);
         intent.putExtra("rest_id", restId);
         startActivity(intent);
@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 editRestaurant(restaurants.get((int) info.id).getId());
                 return true;
             case R.id.action_delete_restaurant:
-                int restId = (int)info.id;
+                int restId = (int) info.id;
                 deleteRestaurant(restaurants.get(restId).getId());
                 return true;
             case R.id.action_share_restaurant:
