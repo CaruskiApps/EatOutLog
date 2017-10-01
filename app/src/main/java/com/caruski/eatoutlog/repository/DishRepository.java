@@ -8,7 +8,7 @@ public interface DishRepository {
 
     long createDish(Dish dish);
 
-    Dish getDish(long dish_id);
+    Dish getDish(long dishId);
 
     /**
      * get all dishes that match a restId

@@ -17,6 +17,8 @@ import com.caruski.eatoutlog.repository.RestaurantRepository;
 
 import javax.inject.Inject;
 
+import static com.caruski.eatoutlog.constants.Constants.REST_ID;
+
 public class NewRestActivity extends AppCompatActivity {
 
     @Inject
@@ -25,7 +27,7 @@ public class NewRestActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         // Pass the view to Dagger for injection
-        EatOutLogApplication.app().applicationComponent().inject(this);
+        EatOutLogApplication.injector().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_rest);
 
@@ -35,8 +37,8 @@ public class NewRestActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            if (extras.containsKey("rest_id")) {
-                restId = extras.getLong("rest_id");
+            if (extras.containsKey(REST_ID)) {
+                restId = extras.getLong(REST_ID);
                 Restaurant rest = restaurantRepository.getRestaurant(restId);
                 setTitle(rest.getName());
                 restNameBox.setText(rest.getName());
@@ -67,7 +69,7 @@ public class NewRestActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Restaurant Saved\nID: " + restId,
                             Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(NewRestActivity.this, NewDishActivity.class);
-                    intent.putExtra("rest_id", restId);
+                    intent.putExtra(REST_ID, restId);
                     finish();
                     startActivity(intent);
                 }

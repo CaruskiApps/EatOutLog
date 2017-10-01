@@ -10,5 +10,5 @@
     <item
         android:id="@+id/action_camera_image"
         android:orderInCategory="101"
-        android:title="@string/camera"/>
+        android:title="@string/camera" />
 </menu>

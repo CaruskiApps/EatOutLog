@@ -26,13 +26,14 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
+import static com.caruski.eatoutlog.constants.Constants.REST_ID;
+
 public class MainActivity extends AppCompatActivity {
-    
+
     @Inject
     RestaurantRepository restaurantRepository;
     @Inject
     DishRepository dishRepository;
-    private ListView lv;
     SwipeRefreshLayout swipeRefreshLayout;
     List<Restaurant> restaurants = null;
 
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Pass the view to Dagger for injection
-        EatOutLogApplication.app().applicationComponent().inject(this);
+        EatOutLogApplication.injector().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         int index = 0;
         restaurants = restaurantRepository.getAllRestaurants();
 
-        lv = (ListView) findViewById(R.id.restList);
+        ListView lv = (ListView) findViewById(R.id.restList);
         registerForContextMenu(lv);
         final String[] from = new String[restaurants.size()];
         for (Restaurant r : restaurants) {
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, ViewDishesActivity.class);
-                intent.putExtra("rest_id", restaurants.get(position).getId());
+                intent.putExtra(REST_ID, restaurants.get(position).getId());
                 startActivity(intent);
             }
         });
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void editRestaurant(long restId) {
         Intent intent = new Intent(this, NewRestActivity.class);
-        intent.putExtra("rest_id", restId);
+        intent.putExtra(REST_ID, restId);
         startActivity(intent);
     }
 

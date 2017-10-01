@@ -4,15 +4,10 @@ import android.content.Context;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * Created by brand on 9/26/2017.
- */
+import static com.caruski.eatoutlog.constants.Constants.DATABASE_NAME;
+import static com.caruski.eatoutlog.constants.Constants.DATABASE_VERSION;
 
-public abstract class AbstractRepository extends SQLiteOpenHelper {
-
-    //Constants for DB name and version
-    private static final String DATABASE_NAME = "restLog.db";
-    private static final int DATABASE_VERSION = 9;
+abstract class AbstractRepository extends SQLiteOpenHelper {
 
     protected static final String KEY_ID = "_id";
 

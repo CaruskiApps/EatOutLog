@@ -57,9 +57,7 @@ class ImageRepositoryImpl extends AbstractRepository implements ImageRepository 
         values.put(FILENAME, image.getFilename());
         values.put(IMAGE_DATA, image.getData());
 
-        long _id = db.insert(TABLE_IMAGES, null, values);
-
-        return _id;
+        return db.insert(TABLE_IMAGES, null, values);
     }
 
     @Override

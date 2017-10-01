@@ -68,16 +68,14 @@ class DishRepositoryImpl extends AbstractRepository implements DishRepository {
         values.put(TEXTURE, dish.getTexture());
         values.put(COMMENTS, dish.getComments());
 
-        long _id = db.insert(TABLE_DISHES, null, values);
-
-        return _id;
+        return db.insert(TABLE_DISHES, null, values);
     }
 
     @Override
-    public Dish getDish(long dish_id) {
+    public Dish getDish(long dishId) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String selectQuery = "SELECT * FROM " + TABLE_DISHES + " WHERE " + KEY_ID + " = " + dish_id;
+        String selectQuery = "SELECT * FROM " + TABLE_DISHES + " WHERE " + KEY_ID + " = " + dishId;
 
         Cursor c = db.rawQuery(selectQuery, null);
         if (c != null) {

@@ -14,10 +14,6 @@ public class EatOutLogApplication extends Application {
     private static EatOutLogApplication eatOutLogApplication;
     private ApplicationComponent applicationComponent;
 
-    public static EatOutLogApplication app() {
-        return eatOutLogApplication;
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -30,8 +26,14 @@ public class EatOutLogApplication extends Application {
                 .build();
     }
 
-    public ApplicationComponent applicationComponent() {
-        return applicationComponent;
+    /**
+     * Provide static access to the application component built in the onCreate so that Dagger can
+     * inject dependencies into various View classes.
+     *
+     * @return our application component in order to inject things.
+     */
+    public static ApplicationComponent injector() {
+        return eatOutLogApplication.applicationComponent;
     }
 
 }

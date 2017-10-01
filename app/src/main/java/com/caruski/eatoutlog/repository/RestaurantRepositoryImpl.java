@@ -59,9 +59,7 @@ class RestaurantRepositoryImpl extends AbstractRepository implements RestaurantR
         values.put(REST_CITY, restaurant.getCity());
         values.put(REST_STATE, restaurant.getState());
 
-        long newId = db.insert(TABLE_RESTAURANTS, null, values);
-
-        return newId;
+        return db.insert(TABLE_RESTAURANTS, null, values);
     }
 
     @Override

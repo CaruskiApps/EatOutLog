@@ -5,64 +5,64 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-    android:orientation="vertical"
-        android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="16dp"
-    android:paddingBottom="16dp"
-    android:weightSum="1">
-
-    <TableRow
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp">
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:weightSum="1">
 
-        <EditText
+        <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editRestName"
-            android:ems="10"
-            android:inputType="text"
-            android:hint="@string/restaurant_name"
-            android:textAppearance="@style/TextAppearance.AppCompat" />
-    </TableRow>
+            android:padding="8dp">
 
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1.27"
-        android:padding="8dp">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editRestName"
+                android:ems="10"
+                android:inputType="text"
+                android:hint="@string/restaurant_name"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
+        </TableRow>
 
-        <EditText
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:id="@+id/editRestCity"
-            android:inputType="text"
-            android:hint="@string/city"
-            android:textAppearance="@style/TextAppearance.AppCompat" />
+            android:layout_height="match_parent"
+            android:layout_weight="1.27"
+            android:padding="8dp">
 
-    </TableRow>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/editRestCity"
+                android:inputType="text"
+                android:hint="@string/city"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
 
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1.84"
-        android:padding="8dp">
+        </TableRow>
 
-        <EditText
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPostalAddress"
-            android:ems="10"
-            android:id="@+id/editRestState"
-            android:hint="@string/state"
-            android:textAppearance="@style/TextAppearance.AppCompat"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
-    </TableRow>
+            android:layout_height="match_parent"
+            android:layout_weight="1.84"
+            android:padding="8dp">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPostalAddress"
+                android:ems="10"
+                android:id="@+id/editRestState"
+                android:hint="@string/state"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true" />
+        </TableRow>
 
     </LinearLayout>
 

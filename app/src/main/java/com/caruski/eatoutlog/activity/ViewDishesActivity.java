@@ -25,6 +25,9 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
+import static com.caruski.eatoutlog.constants.Constants.DISH_ID;
+import static com.caruski.eatoutlog.constants.Constants.REST_ID;
+
 public class ViewDishesActivity extends AppCompatActivity {
 
     @Inject
@@ -32,19 +35,18 @@ public class ViewDishesActivity extends AppCompatActivity {
     @Inject
     DishRepository dishRepository;
     private long restId;
-    private ListView lv;
     List<Dish> dishes = null;
 
     protected void onCreate(Bundle savedInstanceState) {
         // Pass the view to Dagger for injection
-        EatOutLogApplication.app().applicationComponent().inject(this);
+        EatOutLogApplication.injector().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_dishes);
 
         //get restId from MainActivity
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            restId = extras.getLong("rest_id");
+            restId = extras.getLong(REST_ID);
         }
         //set activity title to restaurant name
         Restaurant restaurant = restaurantRepository.getRestaurant(restId);
@@ -55,7 +57,7 @@ public class ViewDishesActivity extends AppCompatActivity {
         //populate listView with dishes
         int index = 0;
         dishes = dishRepository.getAllDishes(restId);
-        lv = (ListView) findViewById(R.id.dishList);
+        ListView lv = (ListView) findViewById(R.id.dishList);
         registerForContextMenu(lv);
 //        if (dishes.size() == 0) {
 //            Toast.makeText(getApplicationContext(), "You need to add a dish!",
@@ -79,7 +81,7 @@ public class ViewDishesActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent intent = new Intent(getBaseContext(), NewDishActivity.class);
-                intent.putExtra("dish_id", dishes.get(position).getId());
+                intent.putExtra(DISH_ID, dishes.get(position).getId());
                 startActivity(intent);
             }
         });
@@ -87,7 +89,7 @@ public class ViewDishesActivity extends AppCompatActivity {
 
     public void newDish(View view) {
         Intent intent = new Intent(this, NewDishActivity.class);
-        intent.putExtra("rest_id", restId);
+        intent.putExtra(REST_ID, restId);
         startActivity(intent);
     }
 
@@ -121,7 +123,7 @@ public class ViewDishesActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_edit_dish:
                 Intent intent = new Intent(getBaseContext(), NewDishActivity.class);
-                intent.putExtra("dish_id", dishes.get((int) info.id).getId());
+                intent.putExtra(DISH_ID, dishes.get((int) info.id).getId());
                 startActivity(intent);
                 return true;
             case R.id.action_delete_dish:

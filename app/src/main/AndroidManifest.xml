@@ -21,17 +21,15 @@
         <activity
             android:name=".activity.NewRestActivity"
             android:label="@string/activity_new_rest"
-            android:parentActivityName=".activity.MainActivity"/>
+            android:parentActivityName=".activity.MainActivity" />
         <activity
             android:name=".activity.NewDishActivity"
             android:label="Add New Dish"
-            android:parentActivityName=".activity.MainActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            />
+            android:parentActivityName=".activity.NewRestActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".activity.ViewDishesActivity"
             android:label="View Dishes"
-            android:parentActivityName=".activity.MainActivity"
-            />
+            android:parentActivityName=".activity.MainActivity" />
     </application>
 </manifest>

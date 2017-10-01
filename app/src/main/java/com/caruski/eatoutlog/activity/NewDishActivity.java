@@ -30,6 +30,9 @@ import java.io.InputStream;
 
 import javax.inject.Inject;
 
+import static com.caruski.eatoutlog.constants.Constants.DISH_ID;
+import static com.caruski.eatoutlog.constants.Constants.REST_ID;
+
 public class NewDishActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Inject
@@ -44,7 +47,7 @@ public class NewDishActivity extends AppCompatActivity implements View.OnClickLi
 
     protected void onCreate(Bundle savedInstanceState) {
         // Pass the view to Dagger for injection
-        EatOutLogApplication.app().applicationComponent().inject(this);
+        EatOutLogApplication.injector().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_dish);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -57,10 +60,10 @@ public class NewDishActivity extends AppCompatActivity implements View.OnClickLi
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            if (extras.containsKey("rest_id")) {
-                restId = extras.getLong("rest_id");
-            } else if (extras.containsKey("dish_id")) {
-                dishId = extras.getLong("dish_id");
+            if (extras.containsKey(REST_ID)) {
+                restId = extras.getLong(REST_ID);
+            } else if (extras.containsKey(DISH_ID)) {
+                dishId = extras.getLong(DISH_ID);
                 Dish dish = dishRepository.getDish(dishId);
                 setTitle(dish.getName());
                 dishNameBox.setText(dish.getName());
@@ -105,7 +108,7 @@ public class NewDishActivity extends AppCompatActivity implements View.OnClickLi
                     Dish dish = new Dish(restId, dishName, lookRating, tasteRating, textureRating, comments);
                     dishRepository.createDish(dish);
                     Intent intent = new Intent(NewDishActivity.this, ViewDishesActivity.class);
-                    intent.putExtra("rest_id", dish.getRestId());
+                    intent.putExtra(REST_ID, dish.getRestId());
                     finish();
                     startActivity(intent);
                     Toast.makeText(getApplicationContext(), "Dish saved.", Toast.LENGTH_SHORT).show();
