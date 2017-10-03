@@ -1,4 +1,4 @@
-package com.caruski.eatoutlog;
+package com.caruski.eatoutlog.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,25 +10,36 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class NewRestActivity extends AppCompatActivity{
+import com.caruski.eatoutlog.EatOutLogApplication;
+import com.caruski.eatoutlog.R;
+import com.caruski.eatoutlog.domain.Restaurant;
+import com.caruski.eatoutlog.repository.RestaurantRepository;
 
-    DBOpenHelper dbHelper;
+import javax.inject.Inject;
+
+import static com.caruski.eatoutlog.constants.Constants.REST_ID;
+
+public class NewRestActivity extends AppCompatActivity {
+
+    @Inject
+    RestaurantRepository restaurantRepository;
     long restId;
 
     protected void onCreate(Bundle savedInstanceState) {
+        // Pass the view to Dagger for injection
+        EatOutLogApplication.injector().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_rest);
 
-        dbHelper = new DBOpenHelper(getApplicationContext());
         final EditText restNameBox = (EditText) findViewById(R.id.editRestName);
         final EditText restCityBox = (EditText) findViewById(R.id.editRestCity);
         final EditText restStateBox = (EditText) findViewById(R.id.editRestState);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            if (extras.containsKey("rest_id")) {
-                restId = extras.getLong("rest_id");
-                Restaurant rest = dbHelper.getRestaurant(restId);
+            if (extras.containsKey(REST_ID)) {
+                restId = extras.getLong(REST_ID);
+                Restaurant rest = restaurantRepository.getRestaurant(restId);
                 setTitle(rest.getName());
                 restNameBox.setText(rest.getName());
                 restCityBox.setText(rest.getCity());
@@ -36,30 +47,29 @@ public class NewRestActivity extends AppCompatActivity{
             }
         }
 
-        FloatingActionButton saveRestButton = (FloatingActionButton)findViewById(R.id.newRestSaveButton);
+        FloatingActionButton saveRestButton = (FloatingActionButton) findViewById(R.id.newRestSaveButton);
         saveRestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                EditText name = (EditText)findViewById(R.id.editRestName);
+                EditText name = (EditText) findViewById(R.id.editRestName);
                 String rName = name.getText().toString();
-                EditText state = (EditText)findViewById(R.id.editRestState);
+                EditText state = (EditText) findViewById(R.id.editRestState);
                 String rState = state.getText().toString();
-                EditText city = (EditText)findViewById(R.id.editRestCity);
+                EditText city = (EditText) findViewById(R.id.editRestCity);
                 String rCity = city.getText().toString();
 
-                if(rName.length() == 0){
+                if (rName.length() == 0) {
                     Toast.makeText(getApplicationContext(), "Please enter a name for restaurant.",
                             Toast.LENGTH_SHORT).show();
                     setResult(RESULT_CANCELED);
-                }
-                else{
+                } else {
                     Restaurant restaurant = new Restaurant(rName, rState, rCity);
-                    long restId = dbHelper.createRestaurant(restaurant);
+                    long restId = restaurantRepository.createRestaurant(restaurant);
                     Toast.makeText(getApplicationContext(), "Restaurant Saved\nID: " + restId,
                             Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(NewRestActivity.this, NewDishActivity.class);
-                    intent.putExtra("rest_id", restId);
+                    intent.putExtra(REST_ID, restId);
                     finish();
                     startActivity(intent);
                 }

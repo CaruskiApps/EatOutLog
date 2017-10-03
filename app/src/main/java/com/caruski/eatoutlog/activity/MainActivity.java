@@ -1,4 +1,4 @@
-package com.caruski.eatoutlog;
+package com.caruski.eatoutlog.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,43 +6,55 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
-import android.view.MenuInflater;
-import android.view.View;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.caruski.eatoutlog.EatOutLogApplication;
+import com.caruski.eatoutlog.R;
+import com.caruski.eatoutlog.domain.Restaurant;
+import com.caruski.eatoutlog.repository.DishRepository;
+import com.caruski.eatoutlog.repository.RestaurantRepository;
+
 import java.util.List;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
+import static com.caruski.eatoutlog.constants.Constants.REST_ID;
+
 public class MainActivity extends AppCompatActivity {
 
-    DBOpenHelper dbHelper;
-    private ListView lv;
+    @Inject
+    RestaurantRepository restaurantRepository;
+    @Inject
+    DishRepository dishRepository;
     SwipeRefreshLayout swipeRefreshLayout;
     List<Restaurant> restaurants = null;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Pass the view to Dagger for injection
+        EatOutLogApplication.injector().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        dbHelper = new DBOpenHelper(getApplicationContext());
         int index = 0;
-        restaurants = dbHelper.getAllRestaurants();
+        restaurants = restaurantRepository.getAllRestaurants();
 
-        lv = (ListView) findViewById(R.id.restList);
+        ListView lv = (ListView) findViewById(R.id.restList);
         registerForContextMenu(lv);
         final String[] from = new String[restaurants.size()];
-        for(Restaurant r: restaurants){
+        for (Restaurant r : restaurants) {
             from[index] = r.getName();
-            from[index] = from[index].substring(0,1).toUpperCase(Locale.getDefault()) + from[index].substring(1);
+            from[index] = from[index].substring(0, 1).toUpperCase(Locale.getDefault()) + from[index].substring(1);
             index++;
         }
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
@@ -54,12 +66,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, ViewDishesActivity.class);
-                intent.putExtra("rest_id", restaurants.get(position).getId());
+                intent.putExtra(REST_ID, restaurants.get(position).getId());
                 startActivity(intent);
             }
         });
 
-        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swiperefresh);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -70,26 +82,25 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void newRestaurant(View view){
+    public void newRestaurant(View view) {
         Intent intent = new Intent(this, NewRestActivity.class);
         startActivity(intent);
     }
 
-    public void deleteRestaurant(long restId){
-        int count = dbHelper.getDishCount(restId);
-        if(count > 0){
+    public void deleteRestaurant(long restId) {
+        int count = dishRepository.getDishCount(restId);
+        if (count > 0) {
             Toast.makeText(getApplicationContext(), "Restaurant has " + count + " dishes still", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            dbHelper.deleteRestaurant(restId);
+        } else {
+            restaurantRepository.deleteRestaurant(restId);
             Toast.makeText(getApplicationContext(), "Restaurant deleted.", Toast.LENGTH_SHORT).show();
             startActivity(this.getIntent());
         }
     }
 
-    public void editRestaurant(long restId){
+    public void editRestaurant(long restId) {
         Intent intent = new Intent(this, NewRestActivity.class);
-        intent.putExtra("rest_id", restId);
+        intent.putExtra(REST_ID, restId);
         startActivity(intent);
     }
 
@@ -109,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
                 editRestaurant(restaurants.get((int) info.id).getId());
                 return true;
             case R.id.action_delete_restaurant:
-                int restId = (int)info.id;
+                int restId = (int) info.id;
                 deleteRestaurant(restaurants.get(restId).getId());
                 return true;
             case R.id.action_share_restaurant:

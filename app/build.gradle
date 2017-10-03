@@ -1,5 +1,10 @@
 apply plugin: 'com.android.application'
 
+ext {
+    androidSupportVersion = '25.4.0'
+    googleDaggerVersion = '2.11'
+}
+
 android {
     compileSdkVersion 25
     buildToolsVersion '26.0.1'
@@ -20,9 +25,19 @@ android {
 }
 
 dependencies {
+    // include all jars from the 'libs' folder
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    // Android dependencies
+    compile "com.android.support:appcompat-v7:${androidSupportVersion}"
+    compile "com.android.support:design:${androidSupportVersion}"
+    compile "com.android.support:support-core-utils:${androidSupportVersion}"
+    // Dagger 2 dependencies
+    compile "com.google.dagger:dagger:2.${googleDaggerVersion}"
+    annotationProcessor "com.google.dagger:dagger-compiler:${googleDaggerVersion}"
+    // Dagger 2 dependencies for Android
+    compile "com.google.dagger:dagger-android:${googleDaggerVersion}"
+    compile "com.google.dagger:dagger-android-support:${googleDaggerVersion}" // if you use the support libraries
+    annotationProcessor "com.google.dagger:dagger-android-processor:${googleDaggerVersion}"
+    // Test dependencies
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.4.0'
-    compile 'com.android.support:design:25.4.0'
-    compile "com.android.support:support-core-utils:25.4.0"
 }

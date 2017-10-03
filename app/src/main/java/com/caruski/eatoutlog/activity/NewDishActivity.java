@@ -1,7 +1,5 @@
-package com.caruski.eatoutlog;
+package com.caruski.eatoutlog.activity;
 
-import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -18,19 +15,29 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import com.caruski.eatoutlog.EatOutLogApplication;
+import com.caruski.eatoutlog.R;
+import com.caruski.eatoutlog.domain.Dish;
+import com.caruski.eatoutlog.repository.DishRepository;
+
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-public class NewDishActivity extends AppCompatActivity  implements View.OnClickListener{
+import javax.inject.Inject;
 
+import static com.caruski.eatoutlog.constants.Constants.DISH_ID;
+import static com.caruski.eatoutlog.constants.Constants.REST_ID;
+
+public class NewDishActivity extends AppCompatActivity implements View.OnClickListener {
+
+    @Inject
+    DishRepository dishRepository;
     long restId, dishId;
-    DBOpenHelper dbHelper;
     private final int CAMERA_REQUEST_1 = 1200;
     private final int CAMERA_REQUEST_2 = 1201;
     private final int CAMERA_REQUEST_3 = 1202;
@@ -39,11 +46,12 @@ public class NewDishActivity extends AppCompatActivity  implements View.OnClickL
     private ImageView imageView;
 
     protected void onCreate(Bundle savedInstanceState) {
+        // Pass the view to Dagger for injection
+        EatOutLogApplication.injector().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_dish);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        dbHelper = new DBOpenHelper(getApplicationContext());
         final EditText dishNameBox = (EditText) findViewById(R.id.dishName);
         final RatingBar rateBarLook = (RatingBar) findViewById(R.id.ratingBarLook);
         final RatingBar rateBarTaste = (RatingBar) findViewById(R.id.ratingBarTaste);
@@ -52,11 +60,11 @@ public class NewDishActivity extends AppCompatActivity  implements View.OnClickL
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            if (extras.containsKey("rest_id")) {
-                restId = extras.getLong("rest_id");
-            } else if (extras.containsKey("dish_id")) {
-                dishId = extras.getLong("dish_id");
-                Dish dish = dbHelper.getDish(dishId);
+            if (extras.containsKey(REST_ID)) {
+                restId = extras.getLong(REST_ID);
+            } else if (extras.containsKey(DISH_ID)) {
+                dishId = extras.getLong(DISH_ID);
+                Dish dish = dishRepository.getDish(dishId);
                 setTitle(dish.getName());
                 dishNameBox.setText(dish.getName());
                 rateBarLook.setRating(dish.getLook());
@@ -87,20 +95,20 @@ public class NewDishActivity extends AppCompatActivity  implements View.OnClickL
                             Toast.LENGTH_SHORT).show();
                     setResult(RESULT_CANCELED);
                 } else if (dishId > 0) {
-                    Dish dish = dbHelper.getDish(dishId);
+                    Dish dish = dishRepository.getDish(dishId);
                     dish.setName(dishName);
                     dish.setLook(lookRating);
                     dish.setTaste(tasteRating);
                     dish.setTexture(textureRating);
                     dish.setComments(comments);
-                    dbHelper.updateDish(dish);
+                    dishRepository.updateDish(dish);
                     startActivity(new Intent(NewDishActivity.this, MainActivity.class));
                     Toast.makeText(getApplicationContext(), "Dish updated.", Toast.LENGTH_SHORT).show();
                 } else {
                     Dish dish = new Dish(restId, dishName, lookRating, tasteRating, textureRating, comments);
-                    dbHelper.createDish(dish);
+                    dishRepository.createDish(dish);
                     Intent intent = new Intent(NewDishActivity.this, ViewDishesActivity.class);
-                    intent.putExtra("rest_id", dish.getRestId());
+                    intent.putExtra(REST_ID, dish.getRestId());
                     finish();
                     startActivity(intent);
                     Toast.makeText(getApplicationContext(), "Dish saved.", Toast.LENGTH_SHORT).show();
@@ -110,7 +118,7 @@ public class NewDishActivity extends AppCompatActivity  implements View.OnClickL
     }
 
     @Override
-    public void onClick(View v){
+    public void onClick(View v) {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 //        switch(v.getId()){
 //            case R.id.changeImage1:
@@ -133,8 +141,8 @@ public class NewDishActivity extends AppCompatActivity  implements View.OnClickL
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.action_add_image: {
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
@@ -167,19 +175,19 @@ public class NewDishActivity extends AppCompatActivity  implements View.OnClickL
 //            Bitmap photo = (Bitmap)data.getExtras().get("data");
 //            image3.setImageBitmap(photo);
 //        }
-        if(requestCode == SELECT_PHOTO && resultCode == RESULT_OK){
+        if (requestCode == SELECT_PHOTO && resultCode == RESULT_OK) {
             try {
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                 imageView.setImageBitmap(selectedImage);
-            } catch (FileNotFoundException e){
+            } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         }
     }
-    
-    public void setListeners(){
+
+    public void setListeners() {
 //        changeImage1 = (ImageButton)findViewById(R.id.changeImage1);
 //        changeImage2 = (ImageButton)findViewById(R.id.changeImage2);
 //        changeImage3 = (ImageButton)findViewById(R.id.changeImage3);
@@ -191,7 +199,7 @@ public class NewDishActivity extends AppCompatActivity  implements View.OnClickL
 //        changeImage3.setOnClickListener(this);
     }
 
-    public void getRating(View v){
+    public void getRating(View v) {
         // TODO: Fixing Linting error, this method does nothing yet.
     }
 }
